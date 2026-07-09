@@ -1,62 +1,55 @@
 # Bedrock Obfuscator
 
-A client-side Fabric mod for Minecraft **1.21.11** that visually hides the
-bottom bedrock layers of the Overworld, so viewers of your footage cannot
-reverse-engineer your real world coordinates from bedrock-pattern analysis
-(a known deanonymization trick used against streamers and technical players).
+A simple client-side Fabric mod that hides the bottom bedrock layers in the Overworld.
 
-It is rendering only. It never touches real block data, collision, or server
-state. Mining, building, and physics all work normally underneath the overlay.
-Only what gets drawn on your screen changes, and only on your own screen. Other
-players see nothing different.
+At the very bottom of every Minecraft world there's a layer of bedrock with a
+random bumpy pattern. That pattern is different in every spot, so people watching
+your videos or streams can compare it to the game's world files and figure out
+roughly where you are. This mod hides that pattern so they can't.
 
-## What it does
+It only changes what you see on your own screen. It doesn't touch the real world,
+your collisions, or anything on the server. Everyone else sees the normal game.
 
-- Replaces every position from **Y -64 to -60** in the Overworld with a
-  configurable fill block (default: bedrock) at mesh-build time.
-- Leaves the real block wherever your own hitbox overlaps it, so being knocked
-  into a hollowed-out layer does not leave you looking entombed.
-- Leaves genuine holes alone: if the whole -64 to -60 column is air (a shaft
-  straight down to the void), it stays visible instead of getting a fake floor
-  painted over it.
-- Off by default. Toggle it with a hotkey or in the settings screen.
-- Works with the vanilla renderer and with Sodium, so it works under Lunar
-  Client.
+## Features
+
+- Hides bedrock from Y -64 to -60
+- Pick any block to show instead (bedrock by default)
+- Leaves real holes down to the void alone, so it won't cover a gap you could fall through
+- Won't replace a block you're standing inside, so you never look stuck in the floor
+- Turn it on and off with a hotkey
+- Works in Vanilla and Sodium, so it works on Lunar Client too
 
 ## How it works
 
-The mod hooks the client chunk-meshing snapshot and substitutes the fill block
-only while terrain geometry is being baked. It hooks both the vanilla snapshot
-(`RenderSectionRegion`) and Sodium's (`LevelSlice`), since Sodium replaces the
-vanilla mesher. Gameplay reads the live world, never the snapshot, so nothing
-about the actual world changes.
+The mod only changes the picture drawn on your screen. The real blocks never
+change, so mining, walking, falling and multiplayer all work exactly like normal.
+Turn the mod off and the real bedrock shows again right away.
 
 ## Requirements
 
-- Minecraft 1.21.11 (Fabric)
+- Minecraft 1.21.11
+- Fabric Loader
 - Fabric API
-- [MaLiLib](https://modrinth.com/mod/malilib) (hard dependency: config and GUI)
-- [Mod Menu](https://modrinth.com/mod/modmenu) (optional: adds a config button)
+- MaLiLib
+- Mod Menu (optional, adds a settings button in the mod list)
 
 ## Controls
 
-- **Toggle overlay:** Left Shift + B
-- **Open settings:** U + I
+Default hotkeys:
 
-Both hotkeys are set in the mod's settings screen (MaLiLib) and are rebindable
-there. The same two actions are also registered as vanilla keybinds (unbound by
-default), so you can bind them from the vanilla Controls menu instead.
+- Toggle on/off: Left Shift + B
+- Open settings: U + I
+
+You can change both in the mod's settings screen or in Minecraft's own Controls menu.
 
 ## Building
 
-Requires a JDK 21:
-
-```
+```bash
 ./gradlew build
 ```
 
-The built jar lands in `build/libs/`.
+The finished jar will be in `build/libs/`.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT
