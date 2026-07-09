@@ -52,3 +52,5 @@ The finished jar will be in `build/libs/`.
 ## License
 
 MIT
+
+discord: .exdede
