@@ -4,8 +4,8 @@ A simple client-side Fabric mod that hides the bottom bedrock layers in the Over
 
 At the very bottom of every Minecraft world there's a layer of bedrock with a
 random bumpy pattern. That pattern is different in every spot, so people watching
-your videos or streams can compare it to the game's world files and figure out
-roughly where you are. This mod hides that pattern so they can't.
+your videos or streams can find your coords using server seed and figure out 
+where you are. This mod hides that pattern so they can't.
 
 It only changes what you see on your own screen. It doesn't touch the real world,
 your collisions, or anything on the server. Everyone else sees the normal game.
@@ -17,7 +17,6 @@ your collisions, or anything on the server. Everyone else sees the normal game.
 - Leaves real holes down to the void alone, so it won't cover a gap you could fall through
 - Won't replace a block you're standing inside, so you never look stuck in the floor
 - Turn it on and off with a hotkey
-- Works in Vanilla and Sodium, so it works on Lunar Client too
 
 ## How it works
 
