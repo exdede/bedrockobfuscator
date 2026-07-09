@@ -1,0 +1,18 @@
+# Gradle / build output
+.gradle/
+build/
+run/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+
+# Internal working files (not part of the mod)
+message.txt
+wondrous-gathering-tiger.md
