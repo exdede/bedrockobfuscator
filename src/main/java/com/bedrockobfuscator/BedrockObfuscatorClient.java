@@ -33,6 +33,7 @@ public class BedrockObfuscatorClient implements ClientModInitializer {
 
     private static KeyMapping toggleKey;
     private static KeyMapping guiKey;
+    private static KeyMapping toggleUndergroundKey;
 
     private static String lastFill = null;
     private static long[] lastOverlap = new long[0];
@@ -40,6 +41,11 @@ public class BedrockObfuscatorClient implements ClientModInitializer {
     private static int overlapMessageTimer = 0;
     private static boolean lastOverworld = false;
     private static int hookCheckTimer = 0;
+
+    private static boolean lastHideOres = false;
+    private static boolean lastHideStoneVariants = false;
+    private static int lastUndergroundMinY = -64;
+    private static int lastUndergroundMaxY = 80;
 
     @Override
     public void onInitializeClient() {
@@ -60,6 +66,10 @@ public class BedrockObfuscatorClient implements ClientModInitializer {
                 "key.bedrockobfuscator.open_gui",
                 InputConstants.UNKNOWN.getValue(),
                 category));
+        toggleUndergroundKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+                "key.bedrockobfuscator.toggle_underground",
+                InputConstants.UNKNOWN.getValue(),
+                category));
 
         ClientTickEvents.END_CLIENT_TICK.register(this::onEndClientTick);
     }
@@ -69,6 +79,15 @@ public class BedrockObfuscatorClient implements ClientModInitializer {
         RenderState.enabled = Configs.ENABLED.getBooleanValue();
         lastFill = Configs.FILL_BLOCK.getStringValue();
         RenderState.fillState = FillBlockFilter.resolve(lastFill);
+
+        lastHideOres = Configs.HIDE_ORES.getBooleanValue();
+        lastHideStoneVariants = Configs.HIDE_STONE_VARIANTS.getBooleanValue();
+        lastUndergroundMinY = Configs.UNDERGROUND_MIN_Y.getIntegerValue();
+        lastUndergroundMaxY = Configs.UNDERGROUND_MAX_Y.getIntegerValue();
+        RenderState.hideOres = lastHideOres;
+        RenderState.hideStoneVariants = lastHideStoneVariants;
+        RenderState.undergroundMinY = lastUndergroundMinY;
+        RenderState.undergroundMaxY = lastUndergroundMaxY;
     }
 
     private void onEndClientTick(Minecraft mc) {
@@ -80,6 +99,14 @@ public class BedrockObfuscatorClient implements ClientModInitializer {
         if (guiKey != null) {
             while (guiKey.consumeClick()) {
                 GuiBase.openGui(new ConfigScreen(null));
+            }
+        }
+        if (toggleUndergroundKey != null) {
+            while (toggleUndergroundKey.consumeClick()) {
+                boolean newState = !(Configs.HIDE_ORES.getBooleanValue()
+                        || Configs.HIDE_STONE_VARIANTS.getBooleanValue());
+                Configs.HIDE_ORES.setBooleanValue(newState);
+                Configs.HIDE_STONE_VARIANTS.setBooleanValue(newState);
             }
         }
 
@@ -128,6 +155,35 @@ public class BedrockObfuscatorClient implements ClientModInitializer {
         if (lastFill == null || !lastFill.equals(fill)) {
             lastFill = fill;
             RenderState.fillState = FillBlockFilter.resolve(fill);
+            if (RenderState.enabled) {
+                RerenderHelper.rerenderAll(mc);
+            }
+            Configs.INSTANCE.save();
+        }
+
+        boolean hideOres = Configs.HIDE_ORES.getBooleanValue();
+        boolean hideStoneVariants = Configs.HIDE_STONE_VARIANTS.getBooleanValue();
+        int undergroundMinY = Configs.UNDERGROUND_MIN_Y.getIntegerValue();
+        int undergroundMaxY = Configs.UNDERGROUND_MAX_Y.getIntegerValue();
+        boolean undergroundChanged = hideOres != lastHideOres
+                || hideStoneVariants != lastHideStoneVariants
+                || undergroundMinY != lastUndergroundMinY
+                || undergroundMaxY != lastUndergroundMaxY;
+        if (undergroundChanged) {
+            if (hideOres != lastHideOres) {
+                HudFeedback.hideOresToggle(mc, hideOres);
+            }
+            if (hideStoneVariants != lastHideStoneVariants) {
+                HudFeedback.hideStoneVariantsToggle(mc, hideStoneVariants);
+            }
+            lastHideOres = hideOres;
+            lastHideStoneVariants = hideStoneVariants;
+            lastUndergroundMinY = undergroundMinY;
+            lastUndergroundMaxY = undergroundMaxY;
+            RenderState.hideOres = hideOres;
+            RenderState.hideStoneVariants = hideStoneVariants;
+            RenderState.undergroundMinY = undergroundMinY;
+            RenderState.undergroundMaxY = undergroundMaxY;
             if (RenderState.enabled) {
                 RerenderHelper.rerenderAll(mc);
             }

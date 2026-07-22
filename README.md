@@ -17,6 +17,10 @@ your collisions, or anything on the server. Everyone else sees the normal game.
 - Leaves real holes down to the void alone, so it won't cover a gap you could fall through
 - Won't replace a block you're standing inside, so you never look stuck in the floor
 - Turn it on and off with a hotkey
+- Optionally hides ores (on by default) and other underground blocks like andesite,
+  granite, diorite, tuff, gravel, and dirt (off by default) within a height range you
+  choose, so people can't use exposed ore veins or stone patterns to guess your location
+- Hidden ores and blocks are drawn as deepslate below Y 0 and stone above it
 
 ## How it works
 
@@ -38,8 +42,10 @@ Default hotkeys:
 
 - Toggle on/off: Left Shift + B
 - Open settings: U + I
+- Toggle underground hiding (ores and other blocks together): unbound by default
 
-You can change both in the mod's settings screen or in Minecraft's own Controls menu.
+You can set or change any of these in the mod's settings screen or in Minecraft's own
+Controls menu.
 
 ## Building
 

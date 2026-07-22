@@ -9,8 +9,10 @@ import com.google.gson.JsonParser;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
+import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.malilib.config.options.ConfigHotkey;
+import fi.dy.masa.malilib.config.options.ConfigInteger;
 import fi.dy.masa.malilib.config.options.ConfigString;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -52,7 +54,35 @@ public class Configs implements IConfigHandler {
             "The block the bottom layers are drawn as. Type any block id here (including barrier), "
                     + "or use the Pick fill block button for the filtered list.");
 
-    public static final List<IConfigBase> OPTIONS = List.of(ENABLED, OPEN_GUI, FILL_BLOCK);
+    // Underground hiding: a second, independent effect. Ores default ON, the
+    // other blocks default OFF, both share one height range.
+    public static final ConfigBoolean HIDE_ORES = new ConfigBoolean(
+            "Hide ores", true,
+            "When ON, ore blocks in the height range below are drawn as stone or deepslate.");
+
+    public static final ConfigBoolean HIDE_STONE_VARIANTS = new ConfigBoolean(
+            "Hide other underground blocks", false,
+            "When ON, andesite, granite, diorite, tuff, gravel, and dirt in the height range "
+                    + "below are drawn as stone or deepslate.");
+
+    public static final ConfigInteger UNDERGROUND_MIN_Y = new ConfigInteger(
+            "Underground hiding - minimum height", -64, -64, 320,
+            "The lowest height the two settings above apply to.");
+
+    public static final ConfigInteger UNDERGROUND_MAX_Y = new ConfigInteger(
+            "Underground hiding - maximum height", 80, -64, 320,
+            "The highest height the two settings above apply to.");
+
+    // Optional pair toggle: flips HIDE_ORES and HIDE_STONE_VARIANTS together,
+    // without touching the master switch above. Unbound by default.
+    public static final ConfigHotkey TOGGLE_UNDERGROUND = new ConfigHotkey(
+            "Toggle underground hiding", "",
+            "Turns both of the underground-hiding settings above on or off together, "
+                    + "without touching the main bedrock toggle.");
+
+    public static final List<IConfigBase> OPTIONS = List.of(
+            ENABLED, OPEN_GUI, FILL_BLOCK,
+            HIDE_ORES, HIDE_STONE_VARIANTS, UNDERGROUND_MIN_Y, UNDERGROUND_MAX_Y, TOGGLE_UNDERGROUND);
 
     private static Path configFile() {
         return FabricLoader.getInstance().getConfigDir().resolve(Reference.MOD_ID + ".json");

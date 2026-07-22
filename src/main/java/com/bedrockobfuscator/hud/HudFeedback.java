@@ -21,6 +21,22 @@ public final class HudFeedback {
         mc.player.displayClientMessage(Component.literal(message), true);
     }
 
+    public static void hideOresToggle(Minecraft mc, boolean on) {
+        if (mc.player == null) {
+            return;
+        }
+        String message = on ? "Hide ores: ON" : "Hide ores: OFF";
+        mc.player.displayClientMessage(Component.literal(message), true);
+    }
+
+    public static void hideStoneVariantsToggle(Minecraft mc, boolean on) {
+        if (mc.player == null) {
+            return;
+        }
+        String message = on ? "Hide other underground blocks: ON" : "Hide other underground blocks: OFF";
+        mc.player.displayClientMessage(Component.literal(message), true);
+    }
+
     public static void overlapActive(Minecraft mc) {
         if (mc.player == null) {
             return;

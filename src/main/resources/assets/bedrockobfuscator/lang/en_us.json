@@ -1,5 +1,6 @@
 {
   "key.category.bedrockobfuscator.main": "Bedrock Obfuscator",
   "key.bedrockobfuscator.toggle": "Toggle the overlay",
-  "key.bedrockobfuscator.open_gui": "Open Bedrock Obfuscator settings"
+  "key.bedrockobfuscator.open_gui": "Open Bedrock Obfuscator settings",
+  "key.bedrockobfuscator.toggle_underground": "Toggle underground hiding"
 }

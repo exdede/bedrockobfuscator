@@ -34,6 +34,16 @@ public class BedrockObfInitHandler implements IInitializationHandler {
             return true;
         });
 
+        // Flip both underground settings together, as a pair, independent of
+        // the master toggle. The per-tick reconcile handles the rest.
+        Configs.TOGGLE_UNDERGROUND.getKeybind().setCallback((action, keybind) -> {
+            boolean newState = !(Configs.HIDE_ORES.getBooleanValue()
+                    || Configs.HIDE_STONE_VARIANTS.getBooleanValue());
+            Configs.HIDE_ORES.setBooleanValue(newState);
+            Configs.HIDE_STONE_VARIANTS.setBooleanValue(newState);
+            return true;
+        });
+
         BedrockObfuscatorClient.applyConfigToRenderState();
 
         // Write the config out once on startup so the file always exists (and
