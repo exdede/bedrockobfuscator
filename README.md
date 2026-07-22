@@ -59,4 +59,4 @@ The finished jar will be in `build/libs/`.
 
 MIT
 
-discord: .exdede
+my website: [exdede.xyz](https://exdede.xyz/)
