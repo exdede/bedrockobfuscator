@@ -1,9 +1,9 @@
 plugins {
-    id 'fabric-loom' version '1.17.13'
+    id 'net.fabricmc.fabric-loom' version '1.17.13'
     id 'maven-publish'
 }
 
-version = project.mod_version
+version = "${project.mod_version}-mc${project.minecraft_version}"
 group = project.maven_group
 
 base {
@@ -24,39 +24,38 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    // Official Mojang mappings (not Yarn). 1.21.11 is expected to be the last
-    // obfuscated release, so we're already sitting on the mappings we want.
-    mappings loom.officialMojangMappings()
+    // Minecraft ${project.minecraft_version} ships unobfuscated with Mojang's
+    // real names built in, so there is no separate mappings artifact to pull.
 
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // Hard dependency: config/GUI/keybind system.
-    modImplementation "maven.modrinth:malilib:${project.malilib_version}"
+    implementation "maven.modrinth:malilib:${project.malilib_version}"
     // Soft dependency: only used to hook a config button into the mod list.
-    modImplementation "maven.modrinth:modmenu:${project.modmenu_version}"
+    implementation "maven.modrinth:modmenu:${project.modmenu_version}"
 }
 
 processResources {
-    inputs.property "version", project.version
+    inputs.property "version", project.mod_version
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand "version": project.mod_version
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    it.options.release = 25
 }
 
 java {
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
-    from("LICENSE") {
+    from("../../LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
     }
 }

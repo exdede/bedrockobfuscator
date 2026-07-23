@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "bedrockobfuscator",
+  "version": "${version}",
+  "name": "Bedrock Obfuscator",
+  "description": "Visually hides the bottom bedrock layers of the Overworld so viewers can't reverse your coordinates from bedrock patterns. Rendering only: your real world, mining, and physics are never touched.",
+  "authors": [
+    "ExDeDe_"
+  ],
+  "contact": {
+    "homepage": "https://github.com/exdede/bedrockobfuscator",
+    "sources": "https://github.com/exdede/bedrockobfuscator",
+    "issues": "https://github.com/exdede/bedrockobfuscator/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/bedrockobfuscator/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.bedrockobfuscator.BedrockObfuscatorClient"
+    ],
+    "modmenu": [
+      "com.bedrockobfuscator.compat.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "bedrockobfuscator.mixins.json",
+    "bedrockobfuscator.sodium.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": "~26.1.2",
+    "java": ">=25",
+    "fabric-api": "*",
+    "malilib": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}

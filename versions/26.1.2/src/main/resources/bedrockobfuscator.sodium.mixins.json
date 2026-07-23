@@ -1,0 +1,11 @@
+{
+  "required": false,
+  "package": "com.bedrockobfuscator.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "LevelSliceMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}
