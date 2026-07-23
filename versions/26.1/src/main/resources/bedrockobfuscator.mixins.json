@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "com.bedrockobfuscator.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "RenderSectionRegionMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
