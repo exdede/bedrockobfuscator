@@ -27,7 +27,15 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(targets = "net.caffeinemc.mods.sodium.client.world.LevelSlice", remap = false)
 public class LevelSliceMixin implements MeshTarget {
 
-    @ModifyReturnValue(method = "getBlockState", at = @At("RETURN"), remap = false)
+    // Explicit descriptor: LevelSlice overloads getBlockState(BlockPos) and
+    // getBlockState(int,int,int) under the same name, and Mixin cannot tell
+    // them apart from the name alone. Without the descriptor it resolves to
+    // the wrong overload, throws InvalidInjectionException while transforming
+    // LevelSlice, and (since this config is required:false) silently never
+    // applies at all, so the mod loads fine but nothing under Sodium is hidden.
+    @ModifyReturnValue(
+            method = "getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;",
+            at = @At("RETURN"), remap = false)
     private BlockState bedrockobfuscator$hideBedrock(BlockState original, int x, int y, int z) {
         if (MeshProbe.PROBING.get()) {
             return original;

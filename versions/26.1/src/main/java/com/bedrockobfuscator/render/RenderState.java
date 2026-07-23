@@ -82,14 +82,11 @@ public final class RenderState {
      *               shaft; never touches the live world.
      */
     public static BlockState decide(BlockState original, int x, int y, int z, MeshTarget target) {
-        if (!enabled) {
-            return original;
-        }
         if (!overworld) {
             return original;
         }
 
-        if (y >= MIN_Y && y <= MAX_Y) {
+        if (enabled && y >= MIN_Y && y <= MAX_Y) {
             // We are genuinely meshing a target block through a hooked renderer.
             hookRan = true;
 

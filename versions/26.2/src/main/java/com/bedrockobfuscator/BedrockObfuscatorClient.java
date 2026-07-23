@@ -184,9 +184,9 @@ public class BedrockObfuscatorClient implements ClientModInitializer {
             RenderState.hideStoneVariants = hideStoneVariants;
             RenderState.undergroundMinY = undergroundMinY;
             RenderState.undergroundMaxY = undergroundMaxY;
-            if (RenderState.enabled) {
-                RerenderHelper.rerenderAll(mc);
-            }
+            // Independent of the bedrock toggle: this effect can be on while
+            // "Hide the bedrock" is off, so it must not wait on that flag.
+            RerenderHelper.rerenderAll(mc);
             Configs.INSTANCE.save();
         }
     }
@@ -212,7 +212,8 @@ public class BedrockObfuscatorClient implements ClientModInitializer {
         // Sections meshed before we first learned the dimension (or right after
         // walking through a portal into the Overworld) were baked with the real
         // bedrock showing. Force those back through the mixin once on entry.
-        if (overworld && !lastOverworld && RenderState.enabled) {
+        boolean anyEffectActive = RenderState.enabled || RenderState.hideOres || RenderState.hideStoneVariants;
+        if (overworld && !lastOverworld && anyEffectActive) {
             RerenderHelper.rerenderAll(mc);
         }
         lastOverworld = overworld;
