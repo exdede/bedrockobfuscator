@@ -30,7 +30,7 @@ Turn the mod off and the real bedrock shows again right away.
 
 ## Requirements
 
-- Minecraft 1.21.11
+- Minecraft 1.21.11, 26.1, 26.1.1, 26.1.2, or 26.2
 - Fabric Loader
 - Fabric API
 - MaLiLib
@@ -47,13 +47,26 @@ Default hotkeys:
 You can set or change any of these in the mod's settings screen or in Minecraft's own
 Controls menu.
 
+## Versions
+
+This repo has one folder per supported Minecraft version, each a complete,
+independent build:
+
+- `versions/1.21.11/`
+- `versions/26.1/`
+- `versions/26.1.1/`
+- `versions/26.1.2/`
+- `versions/26.2/`
+
 ## Building
 
 ```bash
+cd versions/26.2
 ./gradlew build
 ```
 
-The finished jar will be in `build/libs/`.
+The finished jar will be in that folder's own `build/libs/`, named
+`bedrockobfuscator-<mod version>-mc<game version>.jar`.
 
 ## License
 

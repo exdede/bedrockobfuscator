@@ -4,17 +4,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Bedrock Obfuscator: a client-side Fabric mod for Minecraft 1.21.11 (official Mojang mappings, not Yarn). It visually replaces the bottom five Overworld bedrock layers (Y -64 to -60) with a configurable fill block, purely at render time. It can also hide ores and/or a fixed list of stone-variant blocks (andesite, granite, diorite, tuff, gravel, dirt) anywhere in a configurable Y range, replacing them with deepslate below Y 0 or stone above it, again purely at render time. The real world, collision, mining, and server state are never touched.
+Bedrock Obfuscator: a client-side Fabric mod for Minecraft, built separately per version under `versions/` (1.21.11, 26.1, 26.1.1, 26.1.2, 26.2 — see "Build" below). 1.21.11 uses official Mojang mappings over an obfuscated jar; 26.1 and later build against Minecraft's own unobfuscated jars directly, so there's no mappings step at all. It visually replaces the bottom five Overworld bedrock layers (Y -64 to -60) with a configurable fill block, purely at render time. It can also hide ores and/or a fixed list of stone-variant blocks (andesite, granite, diorite, tuff, gravel, dirt) anywhere in a configurable Y range, replacing them with deepslate below Y 0 or stone above it, again purely at render time. The real world, collision, mining, and server state are never touched.
 
 ## Build
 
-Requires JDK 21. If the system default `java` is newer, point Gradle at 21 explicitly:
+The repo is split into `versions/<x>/` folders, one fully independent Gradle
+project per supported Minecraft version (`1.21.11`, `26.1`, `26.1.1`,
+`26.1.2`, `26.2`). Build one version by `cd`-ing into its folder first —
+there is no root-level `gradlew` anymore.
+
+`versions/1.21.11` targets an obfuscated Minecraft jar and needs JDK 21:
 
 ```bash
+cd versions/1.21.11
 JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 ./gradlew build
 ```
 
-Output jar: `build/libs/bedrockobfuscator-1.0.0.jar`.
+`versions/26.1`, `versions/26.1.1`, `versions/26.1.2`, and `versions/26.2`
+target Minecraft's newer unobfuscated jars and need JDK 25:
+
+```bash
+cd versions/26.2
+JAVA_HOME=/path/to/jdk-25 ./gradlew build
+```
+
+Output jar per folder: `build/libs/bedrockobfuscator-<mod_version>-mc<game_version>.jar`.
 
 `./gradlew runClient` launches a dev client but needs a display (X11/Wayland) — it can't run headless in this environment.
 
